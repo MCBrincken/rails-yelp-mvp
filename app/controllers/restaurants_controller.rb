@@ -1,6 +1,13 @@
 class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: %i[ show edit update destroy ]
 
+  # Add chef to the list of actions below
+  before_action :set_restaurant, only: %i[show edit update destroy chef]
+
+  def chef
+    @chef_name = @restaurant.chef_name
+  end
+
   # GET /restaurants or /restaurants.json
   def index
     @restaurants = Restaurant.all
@@ -66,5 +73,9 @@ class RestaurantsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def restaurant_params
       params.require(:restaurant).permit(:name, :address, :rating)
+    end
+
+    def top
+      @restaurants = Restaurant.where(rating: 5)
     end
 end
